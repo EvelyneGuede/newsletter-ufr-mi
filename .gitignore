@@ -1,0 +1,20 @@
+# Fichiers sensibles
+.env
+config/database_prod.php
+
+# Dépendances
+vendor/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+*.log
+
+# Uploads utilisateurs
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Fichiers temporaires
+tmp_scan_css_classes.py
+hash.php
+test*.php
