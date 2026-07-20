@@ -1,9 +1,11 @@
 # Fichiers sensibles
 .env
 config/database_prod.php
+config/connexion.php
 
 # Dépendances
 vendor/
+composer.lock
 
 # Fichiers système
 .DS_Store
@@ -18,3 +20,10 @@ public/uploads/*
 tmp_scan_css_classes.py
 hash.php
 test*.php
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
