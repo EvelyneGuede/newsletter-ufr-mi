@@ -86,17 +86,17 @@ function envoyerEmail($email, $nom, $type, $role, $motif = '') {
     $mail = new PHPMailer(true);
 
     try {
-        // Configuration SMTP
+        // Configuration SMTP - ✅ FIX: Utiliser les credentials depuis .env
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'angeevelyneguede@gmail.com';
-        $mail->Password   = 'ton_mot_de_passe_app_gmail';
+        $mail->Username   = MAIL_USERNAME;
+        $mail->Password   = MAIL_PASSWORD;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->CharSet    = 'UTF-8';
 
-        $mail->setFrom('angeevelyneguede@gmail.com', 'Administration UFR-MI');
+        $mail->setFrom(MAIL_USERNAME, 'Administration UFR-MI');
         $mail->addAddress($email, $nom);
         $mail->isHTML(true);
 
@@ -119,7 +119,7 @@ function envoyerEmail($email, $nom, $type, $role, $motif = '') {
 // ══ TEMPLATE EMAIL ACCEPTATION ══
 function templateAcceptation($nom, $role) {
     $role_label = ucfirst($role);
-    $url = 'https://ange.devsione.ci';
+    $url = APP_URL;
     $annee = date('Y');
 
     return "<!DOCTYPE html>
@@ -256,7 +256,7 @@ function templateRefus($nom, $role, $motif) {
                 Motif du refus :
             </div>
             <p style='color:#444; font-size:13px; margin:0; line-height:1.6;'>
-                $motif
+                " . htmlspecialchars($motif) . "
             </p>
         </div>
 
