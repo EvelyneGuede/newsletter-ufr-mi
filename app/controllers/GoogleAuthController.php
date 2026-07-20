@@ -5,7 +5,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 $client_id     = GOOGLE_CLIENT_ID;
 $client_secret = GOOGLE_CLIENT_SECRET;
-$redirect_uri  = APP_URL . '/index.php?page=google_auth';
+// Détection automatique local/production
+$redirect_uri = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+    ? 'https://ange.devsione.ci/index.php?page=google_auth'
+    : 'http://localhost/newsletter_automatique/index.php?page=google_auth';
 
 $client = new Google_Client();
 $client->setClientId($client_id);
