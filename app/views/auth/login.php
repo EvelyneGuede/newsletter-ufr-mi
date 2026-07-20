@@ -3,6 +3,7 @@ if (isset($_SESSION['user'])) {
     header('Location: index.php?page=dashboard');
     exit;
 }
+require_once __DIR__ . '/../../config/security.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -229,16 +230,16 @@ if (isset($_SESSION['user'])) {
                 <div class="alert-danger">
                     <?php
                    $erreurs = [
-                     
-                     'identifiants_incorrects' => '❌ Email ou mot de passe incorrect.',
-                     'champs_vides'            => '❌ Veuillez remplir tous les champs.',
-                     'oauth_echec'             => '❌ Échec de l\'authentification Google.',
-                     'compte_en_attente'       => '⏳ Votre compte est en attente de validation par l\'administrateur. Vous recevrez un email dès que votre demande sera traitée.',
-                     'compte_refuse'           => '❌ Votre demande a été refusée par l\'administration. Contactez l\'UFR-MI pour plus d\'informations.',
-                     'compte_desactive'        => '⚠️ Votre compte a été désactivé. Contactez l\'administration.',
-                     ];
+                      
+                      'identifiants_incorrects' => '❌ Email ou mot de passe incorrect.',
+                      'champs_vides'            => '❌ Veuillez remplir tous les champs.',
+                      'oauth_echec'             => '❌ Échec de l\'authentification Google.',
+                      'compte_en_attente'       => '⏳ Votre compte est en attente de validation par l\'administrateur. Vous recevrez un email dès que votre demande sera traitée.',
+                      'compte_refuse'           => '❌ Votre demande a été refusée par l\'administration. Contactez l\'UFR-MI pour plus d\'informations.',
+                      'compte_desactive'        => '⚠️ Votre compte a été désactivé. Contactez l\'administration.',
+                      ];
 
-                    echo $erreurs[$_GET['erreur']] ?? '❌ Une erreur est survenue.';
+                    echo htmlspecialchars($erreurs[$_GET['erreur']] ?? '❌ Une erreur est survenue.', ENT_QUOTES, 'UTF-8');
                     ?>
                 </div>
             <?php endif; ?>
@@ -258,8 +259,10 @@ if (isset($_SESSION['user'])) {
                 </div>
             <?php endif; ?>
 
+            <!-- ✅ FIX: Ajouter token CSRF -->
             <form action="index.php?page=auth_action" method="POST">
                 <input type="hidden" name="action" value="login">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(genererToken(), ENT_QUOTES, 'UTF-8'); ?>">
 
                 <div class="mb-3">
                     <label class="form-label">Adresse email</label>
@@ -287,7 +290,7 @@ if (isset($_SESSION['user'])) {
             <div class="separator">ou</div>
 
             <a href="app/controllers/GoogleAuthController.php" class="btn-google">
-                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 533.5 544.3'><path fill='%23ea4335' d='M533.5 278.4c0-17.6-1.4-34.6-4-51.1H272v96.7h146.9c-6.4 34.6-25.9 63.9-55.4 83.6v69.5h89.4c52.5-48.3 82.6-119.7 82.6-199.4z'/><path fill='%234285f4' d='M272 544.3c73.7 0 135.6-24.4 180.8-66.2l-89.4-69.5c-25 16.9-56.6 27.1-91.4 27.1-70.3 0-129.9-47.5-151.3-111.4H28.6v69.9C73.7 486.6 167.6 544.3 272 544.3z'/><path fill='%2396be3b' d='M120.7 328.3c-10.8-32.5-10.8-67.4 0-99.9V158.5H28.6c-36.6 72.9-36.6 159.8 0 232.7l92.1-63z'/><path fill='%23fbbc04' d='M272 107.7c39.9 0 75.9 13.7 104.3 40.7l78.2-78.2C403.8 24.4 341.8 0 272 0 167.6 0 73.7 57.7 28.6 158.5l92.1 69.9C142.1 155.2 201.7 107.7 272 107.7z'/></svg>"
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 533.5 544.3'><path fill='%23ea4335' d='M533.5 278.4c0-17.6-1.4-34.6-4-51.1H272v96.7h146.9c-6.2 31.1-24.4 57.6-51.4 75.2v66h83.6c48.2-44.4 75.9-109.9 75.9-187.8z'/><path fill='%2334a853' d='M272 544c51.8 0 95.2-17.3 127-46.3l-83.6-66c-17.5 11.6-39.8 18-43.4 18-33.6 0-62-22.3-72-52h-86v68c20.8 41.5 61.5 69.3 110-1z'/><path fill='%234285f4' d='M200 414.5c-10-6.7-18.3-16.6-22-28.5h-86v68c12.6 25.3 31.1 47.4 55 62.1 24-62 37.1-121 37.1-181.6-.1 0 16-118 16-118z'/><path fill='%23fbbc04' d='M200 414.5c-10-6.7-18.3-16.6-22-28.5H92v68c12.6 25.3 31.1 47.4 55 62.1' /><path fill='%23ea4335' d='M272 354.1c8.8 0 17.3 1.5 25.4 4.3l74.5-73c-40.3-37.1-94.4-59.9-155.9-59.9-65.3 0-121.2 33.9-152.4 84.3l86 68c10-30.3 38.5-52.3 72-52.3' /></svg>"
                      alt="Google logo">
                 Se connecter avec Google
             </a> 
