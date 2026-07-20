@@ -54,8 +54,20 @@ function soumettre() {
         $allowed  = ['jpg', 'jpeg', 'png', 'pdf'];
 
         if (in_array(strtolower($ext), $allowed) && $_FILES['piece_jointe']['size'] <= 5 * 1024 * 1024) {
-            move_uploaded_file($_FILES['piece_jointe']['tmp_name'], $upload_dir . $filename);
-            $piece_jointe = $filename;
+            $upload_path = $upload_dir . $filename;
+            
+            // ✅ FIX: Valider que le chemin réel reste dans le répertoire uploads
+            $real_path = realpath($upload_dir);
+            $target_real_path = realpath(dirname($upload_path)) . DIRECTORY_SEPARATOR . basename($upload_path);
+            
+            if ($real_path && strpos($target_real_path, $real_path) === 0) {
+                move_uploaded_file($_FILES['piece_jointe']['tmp_name'], $upload_path);
+                $piece_jointe = $filename;
+            } else {
+                // Tentative de traversée de répertoire détectée
+                header('Location: index.php?page=soumettre_article&erreur=fichier_invalide');
+                exit;
+            }
         }
     }
 
@@ -128,8 +140,15 @@ function supprimer() {
     // Supprimer la pièce jointe si elle existe
     if (!empty($article['piece_jointe'])) {
         $fichier = __DIR__ . '/../../public/uploads/' . $article['piece_jointe'];
-        if (file_exists($fichier)) {
-            unlink($fichier);
+        
+        // ✅ FIX: Valider que le fichier est bien dans le répertoire uploads
+        $real_uploads_dir = realpath(__DIR__ . '/../../public/uploads/');
+        $real_file_path = realpath($fichier);
+        
+        if ($real_uploads_dir && $real_file_path && strpos($real_file_path, $real_uploads_dir) === 0) {
+            if (file_exists($real_file_path)) {
+                unlink($real_file_path);
+            }
         }
     }
 
