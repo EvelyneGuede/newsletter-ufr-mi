@@ -89,9 +89,10 @@ function genererTemplate($db, $titre, $articles_ids) {
         // Image si présente
         $image_html = '';
         if (!empty($article['piece_jointe'])) {
+            $image_url = APP_URL . '/public/uploads/' . htmlspecialchars($article['piece_jointe']);
             $image_html = "
             <div style='margin-top:16px;'>
-                 <img src='http://localhost/newsletter_automatique/public/uploads/{$article['piece_jointe']}'
+                 <img src='$image_url'
                      style='max-width:100%; border-radius:10px;'
                      alt='Image de l article'>
             </div>";
@@ -100,7 +101,7 @@ function genererTemplate($db, $titre, $articles_ids) {
         $articles_html .= "
         <div style='background:#fff; border-radius:12px; padding:24px; margin-bottom:20px; border-left:4px solid $color;'>
             <div style='display:inline-block; background:$color; color:#fff; font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; margin-bottom:10px; text-transform:uppercase;'>
-                {$article['type']}
+                " . htmlspecialchars($article['type']) . "
             </div>
             <h2 style='font-size:18px; font-weight:700; color:#1515b5; margin:0 0 8px;'>
                 " . htmlspecialchars($article['titre']) . "
@@ -117,7 +118,7 @@ function genererTemplate($db, $titre, $articles_ids) {
 
     $date  = date('d/m/Y');
     $annee = date('Y');
-    $logo_url = 'http://localhost/newsletter_automatique/app/views/admin/logomi.jpeg';
+    $logo_url = APP_URL . '/app/views/admin/logomi.jpeg';
 
     return "<!DOCTYPE html>
 <html lang='fr'>
@@ -129,7 +130,7 @@ function genererTemplate($db, $titre, $articles_ids) {
         <div style='background:linear-gradient(135deg,#1515b5,#2929cc); border-radius:16px 16px 0 0; padding:36px 32px; text-align:center;'>
             <div style='display:flex; justify-content:center; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:10px;'>
                 <div style='font-size:64px; font-weight:900; color:#5555ff; letter-spacing:-2px; line-height:1;'>MI</div>
-                <img src='$logo_url' alt='Logo du département' style='width:78px; height:auto; max-height:70px; object-fit:contain; border-radius:10px; background:#fff; padding:6px; border:1px solid #e0e0ff; box-shadow:0 4px 10px rgba(0,0,0,0.12);'>
+                <img src='$logo_url' alt='Logo du département' style='width:78px; height:auto; max-height:70px; object-fit:contain; border-radius:10px; background:#fff; padding:6px; border:1px solid rgba(255,255,255,0.3);'>
             </div>
             <div style='color:#e0e0ff; font-size:12px; letter-spacing:2px; text-transform:uppercase; margin-top:8px;'>
                 UFR Mathématique-Informatique
@@ -149,7 +150,7 @@ function genererTemplate($db, $titre, $articles_ids) {
                 © $annee UFR-MI — Université Félix Houphouët-Boigny, Abidjan
             </p>
             <p style='margin:16px 0 0;'>
-                <a href='index.php?page=desabonner&email={EMAIL}'
+                <a href='" . APP_URL . "/index.php?page=desabonner&email={EMAIL}'
                    style='background:#4a90d9; color:#fff; padding:8px 24px; border-radius:20px;
                           font-size:12px; font-weight:600; text-decoration:none;
                           display:inline-block;'>
@@ -194,13 +195,13 @@ function envoyer() {
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'ton_email@gmail.com';   // ← ton Gmail
-            $mail->Password   = 'ton_mot_de_passe_app';  // ← mot de passe app
+            $mail->Username   = MAIL_USERNAME;
+            $mail->Password   = MAIL_PASSWORD;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
             $mail->CharSet    = 'UTF-8';
 
-            $mail->setFrom('ton_email@gmail.com', 'Newsletter UFR-MI');
+            $mail->setFrom(MAIL_USERNAME, 'Newsletter UFR-MI');
             $mail->addAddress($dest['email'], $dest['prenom'] . ' ' . $dest['nom']);
             $mail->isHTML(true);
             $mail->Subject = $newsletter['titre'];
@@ -216,15 +217,21 @@ function envoyer() {
             $mail->send();
             $nb_envoyes++;
 
-            // Traçabilité
+            // Traçabilité - utiliser prepared statement
             $db->prepare("INSERT IGNORE INTO destinataires (email, nom, role) VALUES (?, ?, ?)")
                ->execute([$dest['email'], $dest['nom'], $dest['role']]);
-            $dest_id = $db->query("SELECT id FROM destinataires WHERE email = '" . $dest['email'] . "'")->fetchColumn();
+            
+            // ✅ FIX: Utiliser un prepared statement pour récupérer l'ID
+            $stmt_dest = $db->prepare("SELECT id FROM destinataires WHERE email = ?");
+            $stmt_dest->execute([$dest['email']]);
+            $dest_id = $stmt_dest->fetchColumn();
+            
             $db->prepare("INSERT INTO envois (newsletter_id, destinataire_id) VALUES (?, ?)")
                ->execute([$newsletter_id, $dest_id]);
 
         } catch (Exception $e) {
             // Email non envoyé, on continue
+            error_log("Erreur envoi email: " . $e->getMessage());
         }
     }
 
