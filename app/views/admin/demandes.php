@@ -49,6 +49,12 @@ require VIEWS_PATH . '/layouts/header.php';
         </div>
     <?php endif; ?>
 
+    <?php if (isset($_GET['erreur']) && $_GET['erreur'] === 'email_non_envoye'): ?>
+        <div class="alert-danger">
+            La demande a bien été enregistrée, mais l'email n'a pas pu être envoyé. Vérifiez la configuration SMTP.
+        </div>
+    <?php endif; ?>
+
     <?php if ($schema_demandes_incomplet): ?>
         <div class="alert-danger">
             La gestion des demandes n'est pas encore activée sur cette base de données.

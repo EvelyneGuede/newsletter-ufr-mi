@@ -10,6 +10,7 @@ $user = $_SESSION['user'];
 $utilisateurs = $db->query("
     SELECT *, (SELECT COUNT(*) FROM articles WHERE auteur_id = utilisateurs.id) as nb_articles
     FROM utilisateurs
+    WHERE validation_statut IS NULL OR validation_statut <> 'refuse'
     ORDER BY created_at DESC
 ")->fetchAll();
 ?>

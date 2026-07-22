@@ -38,7 +38,7 @@ switch ($action) {
         ")->execute([$user_id]);
 
         // Envoyer email d'acceptation
-        envoyerEmail(
+        $email_envoye = envoyerEmail(
             $destinataire['email'],
             $destinataire['prenom'] . ' ' . $destinataire['nom'],
             'acceptation',
@@ -46,7 +46,8 @@ switch ($action) {
             ''
         );
 
-        header('Location: ' . APP_URL . '/index.php?page=demandes&succes=accepte');
+        $parametre_email = $email_envoye ? '' : '&erreur=email_non_envoye';
+        header('Location: ' . APP_URL . '/index.php?page=demandes&succes=accepte' . $parametre_email);
         break;
 
     case 'refuser':
@@ -67,7 +68,7 @@ switch ($action) {
         ")->execute([$motif, $user_id]);
 
         // Envoyer email de refus
-        envoyerEmail(
+        $email_envoye = envoyerEmail(
             $destinataire['email'],
             $destinataire['prenom'] . ' ' . $destinataire['nom'],
             'refus',
@@ -75,13 +76,19 @@ switch ($action) {
             $motif
         );
 
-        header('Location: ' . APP_URL . '/index.php?page=demandes&succes=refuse');
+        $parametre_email = $email_envoye ? '' : '&erreur=email_non_envoye';
+        header('Location: ' . APP_URL . '/index.php?page=demandes&succes=refuse' . $parametre_email);
         break;
 }
 exit;
 
 // ══ FONCTION D'ENVOI EMAIL ══
 function envoyerEmail($email, $nom, $type, $role, $motif = '') {
+
+    if (empty(MAIL_USERNAME) || empty(MAIL_PASSWORD)) {
+        error_log('Email non envoyé : identifiants SMTP manquants.');
+        return false;
+    }
 
     $mail = new PHPMailer(true);
 
@@ -109,10 +116,11 @@ function envoyerEmail($email, $nom, $type, $role, $motif = '') {
         }
 
         $mail->send();
+        return true;
 
     } catch (Exception $e) {
-        // Email non envoyé mais on continue
         error_log("Email non envoyé : " . $e->getMessage());
+        return false;
     }
 }
 
