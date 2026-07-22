@@ -33,8 +33,12 @@ if (isset($user)) {
                 <span class="icon"></span> Utilisateurs
             </a>
             <?php
-            $db_nav = getDB();
-            $nb_dem = $db_nav->query("SELECT COUNT(*) FROM utilisateurs WHERE validation_statut = 'en_attente' AND role != 'etudiant' AND actif = 0")->fetchColumn();
+            $nb_dem = 0;
+            try {
+                $db_nav = getDB();
+                $nb_dem = (int) $db_nav->query("SELECT COUNT(*) FROM utilisateurs WHERE validation_statut = 'en_attente' AND role != 'etudiant' AND actif = 0")->fetchColumn();
+            } catch (PDOException $e) {
+            }
             ?>
             <a class="menu-item <?= ($page_active === 'demandes') ? 'active' : '' ?>"
                href="index.php?page=demandes">
