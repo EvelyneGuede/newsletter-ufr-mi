@@ -67,7 +67,7 @@ require VIEWS_PATH . '/layouts/header.php';
                         <input type="hidden" name="action" value="envoyer">
                         <input type="hidden" name="newsletter_id" value="<?= $newsletter['id'] ?>">
                         <button type="submit" class="btn-envoyer"
-                                onclick="return confirm('Envoyer cette newsletter à tous les abonnés ?')">
+                                onclick="return confirm('Envoyer cette newsletter à tous les utilisateurs actifs ?')">
                              Envoyer la newsletter
                         </button>
                     </form>
@@ -81,7 +81,10 @@ require VIEWS_PATH . '/layouts/header.php';
                 <?php if ($_GET['succes'] === 'cree'): ?>
                      Newsletter créée avec succès ! Vérifiez l'aperçu avant d'envoyer.
                 <?php elseif ($_GET['succes'] === 'envoye'): ?>
-                     Newsletter envoyée à <?= $_GET['nb'] ?? 0 ?> destinataire(s) !
+                     Newsletter envoyée à <?= (int) ($_GET['nb'] ?? 0) ?> destinataire(s).
+                     <?php if ((int) ($_GET['echecs'] ?? 0) > 0): ?>
+                         <?= (int) $_GET['echecs'] ?> email(s) n'ont pas pu être envoyé(s). Vérifiez la configuration SMTP.
+                     <?php endif; ?>
                 <?php endif; ?>
             </div>
         <?php endif; ?>

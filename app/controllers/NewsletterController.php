@@ -184,14 +184,21 @@ function envoyer() {
     $newsletter = $stmt->fetch();
 
     $destinataires = $db->query("
-        SELECT * FROM utilisateurs WHERE abonne_newsletter = 1 AND actif = 1
+        SELECT * FROM utilisateurs
+        WHERE actif = 1
+        ORDER BY id
     ")->fetchAll();
 
     $nb_envoyes = 0;
+    $nb_echecs = 0;
 
     foreach ($destinataires as $dest) {
         $mail = new PHPMailer(true);
         try {
+            if (empty(MAIL_USERNAME) || empty(MAIL_PASSWORD)) {
+                throw new Exception('Identifiants SMTP manquants.');
+            }
+
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
@@ -230,7 +237,7 @@ function envoyer() {
                ->execute([$newsletter_id, $dest_id]);
 
         } catch (Exception $e) {
-            // Email non envoyé, on continue
+            $nb_echecs++;
             error_log("Erreur envoi email: " . $e->getMessage());
         }
     }
@@ -241,7 +248,7 @@ function envoyer() {
         WHERE id = ?
     ")->execute([$nb_envoyes, $newsletter_id]);
 
-    header("Location: index.php?page=apercu_newsletter&id=$newsletter_id&succes=envoye&nb=$nb_envoyes");
+    header("Location: index.php?page=apercu_newsletter&id=$newsletter_id&succes=envoye&nb=$nb_envoyes&echecs=$nb_echecs");
     exit;
 }
 
