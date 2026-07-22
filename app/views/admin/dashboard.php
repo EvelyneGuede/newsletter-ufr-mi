@@ -16,7 +16,7 @@ if ($user['role'] === 'etudiant') {
 }
 
 // Récupérer les statistiques
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db = getDB();
 
 $nb_utilisateurs = $db->query("SELECT COUNT(*) FROM utilisateurs")->fetchColumn();
@@ -27,7 +27,7 @@ $nb_newsletters  = $db->query("SELECT COUNT(*) FROM newsletters")->fetchColumn()
 <?php
 $titre_page = 'Tableau de bord';
 $page_active = 'dashboard';
-require 'app/views/layouts/header.php';
+require VIEWS_PATH . '/layouts/header.php';
 ?>
     <style>
         /* ── Cartes statistiques ── */
@@ -112,7 +112,7 @@ require 'app/views/layouts/header.php';
     </style>
 </head>
 <body>
-<?php require 'app/views/layouts/sidebar.php'; ?>
+<?php require VIEWS_PATH . '/layouts/sidebar.php'; ?>
 
     <!-- ══ CONTENU PRINCIPAL ══ -->
     <div class="main-content">
@@ -168,5 +168,5 @@ require 'app/views/layouts/header.php';
 
     </div>
 
-<?php require 'app/views/layouts/footer.php'; ?>
+<?php require VIEWS_PATH . '/layouts/footer.php'; ?>
 

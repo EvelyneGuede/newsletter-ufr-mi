@@ -3,7 +3,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'administratif') 
     header('Location: index.php?page=login');
     exit;
 }
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db   = getDB();
 $user = $_SESSION['user'];
 
@@ -24,10 +24,10 @@ $historique = $db->query("
 
 $titre_page  = 'Demandes de compte';
 $page_active = 'demandes';
-require 'app/views/layouts/header.php';
+require VIEWS_PATH . '/layouts/header.php';
 ?>
 
-<?php require 'app/views/layouts/sidebar.php'; ?>
+<?php require VIEWS_PATH . '/layouts/sidebar.php'; ?>
 
 <div class="main-content">
 
@@ -194,4 +194,4 @@ function toggleRefus(id) {
 }
 </script>
 
-<?php require 'app/views/layouts/footer.php'; ?>
+<?php require VIEWS_PATH . '/layouts/footer.php'; ?>

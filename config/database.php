@@ -19,20 +19,20 @@ if (file_exists($env_file)) {
     }
 }
 
-$is_local = ($env['APP_ENV'] ?? 'local') === 'local';
+$is_prod = ($env['APP_ENV'] ?? 'local') === 'production';
 
-if ($is_local) {
-    define('DB_HOST', $env['DB_HOST_LOCAL'] ?? 'localhost');
-    define('DB_NAME', $env['DB_NAME_LOCAL'] ?? 'newsletter_guede');
-    define('DB_USER', $env['DB_USER_LOCAL'] ?? 'root');
-    define('DB_PASS', $env['DB_PASS_LOCAL'] ?? '');
-    define('APP_URL', $env['APP_URL_LOCAL'] ?? 'http://localhost/newsletter_automatique');
-} else {
+if ($is_prod) {
     define('DB_HOST', $env['DB_HOST_PROD'] ?? 'localhost');
     define('DB_NAME', $env['DB_NAME_PROD'] ?? 'devsione_newsletter_guede');
     define('DB_USER', $env['DB_USER_PROD'] ?? 'devsione_newsletter');
     define('DB_PASS', $env['DB_PASS_PROD'] ?? '');
     define('APP_URL', $env['APP_URL_PROD'] ?? 'https://ange.devsione.ci');
+} else {
+    define('DB_HOST', $env['DB_HOST_LOCAL'] ?? 'localhost');
+    define('DB_NAME', $env['DB_NAME_LOCAL'] ?? 'newsletter_guede');
+    define('DB_USER', $env['DB_USER_LOCAL'] ?? 'root');
+    define('DB_PASS', $env['DB_PASS_LOCAL'] ?? '');
+    define('APP_URL', $env['APP_URL_LOCAL'] ?? 'http://localhost/newsletter_automatique');
 }
 
 define('DB_CHARSET', 'utf8mb4');
@@ -40,6 +40,13 @@ define('GOOGLE_CLIENT_ID', $env['GOOGLE_CLIENT_ID'] ?? '');
 define('GOOGLE_CLIENT_SECRET', $env['GOOGLE_CLIENT_SECRET'] ?? '');
 define('MAIL_USERNAME', $env['MAIL_USERNAME'] ?? '');
 define('MAIL_PASSWORD', $env['MAIL_PASSWORD'] ?? '');
+
+if (!defined('ROOT_PATH')) {
+    define('ROOT_PATH', dirname(__DIR__));
+}
+if (!defined('VIEWS_PATH')) {
+    define('VIEWS_PATH', ROOT_PATH . '/app/views');
+}
 
 if (!function_exists('getDB')) {
     function getDB() {

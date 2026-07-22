@@ -3,7 +3,7 @@ if (!isset($_SESSION['user'])) {
     header('Location: index.php?page=login');
     exit;
 }
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db   = getDB();
 $user = $_SESSION['user'];
 
@@ -23,7 +23,7 @@ $retour = $user['role'] === 'etudiant'
 <?php
 $titre_page = 'Archives';
 $page_active = 'archives';
-require 'app/views/layouts/header.php';
+require VIEWS_PATH . '/layouts/header.php';
 ?>
     <style>
         .nl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -40,7 +40,7 @@ require 'app/views/layouts/header.php';
     </style>
 </head>
 <body>
-<?php require 'app/views/layouts/sidebar.php'; ?>
+<?php require VIEWS_PATH . '/layouts/sidebar.php'; ?>
 
     <div class="main-content">
         <div class="page-header">
@@ -71,4 +71,4 @@ require 'app/views/layouts/header.php';
             </div>
         <?php endif; ?>
     </div>
-<?php require 'app/views/layouts/footer.php'; ?>
+<?php require VIEWS_PATH . '/layouts/footer.php'; ?>

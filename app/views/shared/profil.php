@@ -3,7 +3,7 @@ if (!isset($_SESSION['user'])) {
     header('Location: index.php?page=login');
     exit;
 }
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db   = getDB();
 $user = $_SESSION['user'];
 
@@ -19,7 +19,7 @@ $retour = $user['role'] === 'etudiant'
 <?php
 $titre_page = 'Mon profil';
 $page_active = 'profil';
-require 'app/views/layouts/header.php';
+require VIEWS_PATH . '/layouts/header.php';
 ?>
     <style>
         .user-avatar-lg { width: 80px; height: 80px; border-radius: 50%; background: #4a90d9; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #0d1b6e; font-size: 32px; margin: 0 auto 16px; }
@@ -37,7 +37,7 @@ require 'app/views/layouts/header.php';
     </style>
 </head>
 <body>
-<?php require 'app/views/layouts/sidebar.php'; ?>
+<?php require VIEWS_PATH . '/layouts/sidebar.php'; ?>
 
     <div class="main-content">
         <div class="profil-card">
@@ -86,4 +86,4 @@ require 'app/views/layouts/header.php';
             </form>
         </div>
     </div>
-<?php require 'app/views/layouts/footer.php'; ?>
+<?php require VIEWS_PATH . '/layouts/footer.php'; ?>

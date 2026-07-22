@@ -3,7 +3,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'administratif') 
     header('Location: index.php?page=login');
     exit;
 }
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db   = getDB();
 $user = $_SESSION['user'];
 
@@ -19,11 +19,11 @@ $articles = $db->query("
 <?php
 $titre_page = 'Créer une newsletter';
 $page_active = 'newsletters';
-require 'app/views/layouts/header.php';
+require VIEWS_PATH . '/layouts/header.php';
 ?>
 </head>
 <body>
-<?php require 'app/views/layouts/sidebar.php'; ?>
+<?php require VIEWS_PATH . '/layouts/sidebar.php'; ?>
 
     <div class="main-content">
         <div class="form-card">
@@ -91,5 +91,5 @@ require 'app/views/layouts/header.php';
         label.classList.toggle('selected', cb.checked);
     }
     </script>
-<?php require 'app/views/layouts/footer.php'; ?>
+<?php require VIEWS_PATH . '/layouts/footer.php'; ?>
 

@@ -4,7 +4,7 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db = getDB();
 
 $id = $_GET['id'];
@@ -19,7 +19,7 @@ if (!$newsletter) {
 
 $titre_page  = $newsletter['titre'];
 $page_active = 'archives';
-require 'app/views/layouts/header.php';
+require VIEWS_PATH . '/layouts/header.php';
 ?>
     <style>
         .main-content { margin-left: 0 !important; padding: 32px !important; }
@@ -47,4 +47,4 @@ require 'app/views/layouts/header.php';
                 style="width:100%; height:700px; border:none; margin-top:20px; display:block;">
         </iframe>
     </div>
-<?php require 'app/views/layouts/footer.php'; ?>
+<?php require VIEWS_PATH . '/layouts/footer.php'; ?>

@@ -1,6 +1,5 @@
 <?php
-// Layout sidebar réutilisable
-// Variables attendues : $user, $page_active
+require_once ROOT_PATH . '/config/database.php';
 $retour = '';
 if (isset($user)) {
     $retour = $user['role'] === 'etudiant'

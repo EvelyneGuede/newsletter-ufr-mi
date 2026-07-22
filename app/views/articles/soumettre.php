@@ -4,7 +4,7 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 $user = $_SESSION['user'];
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db = getDB();
 
 $categories = $db->query("SELECT * FROM categories")->fetchAll();
@@ -16,11 +16,11 @@ $retour = $user['role'] === 'etudiant'
 <?php
 $titre_page = 'Soumettre un article';
 $page_active = 'soumettre_article';
-require 'app/views/layouts/header.php';
+require VIEWS_PATH . '/layouts/header.php';
 ?>
 </head>
 <body>
-<?php require 'app/views/layouts/sidebar.php'; ?>
+<?php require VIEWS_PATH . '/layouts/sidebar.php'; ?>
 
     <div class="main-content">
         <div class="form-card">
@@ -110,4 +110,4 @@ require 'app/views/layouts/header.php';
             </form>
         </div>
     </div>
-<?php require 'app/views/layouts/footer.php'; ?>
+<?php require VIEWS_PATH . '/layouts/footer.php'; ?>

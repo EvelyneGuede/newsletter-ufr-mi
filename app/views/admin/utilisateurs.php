@@ -3,7 +3,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'administratif') 
     header('Location: index.php?page=login');
     exit;
 }
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db   = getDB();
 $user = $_SESSION['user'];
 
@@ -16,7 +16,7 @@ $utilisateurs = $db->query("
 <?php
 $titre_page = 'Utilisateurs';
 $page_active = 'utilisateurs';
-require 'app/views/layouts/header.php';
+require VIEWS_PATH . '/layouts/header.php';
 ?>
     <style>
         .search-bar { background: #fff; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); display: flex; gap: 12px; }
@@ -47,7 +47,7 @@ require 'app/views/layouts/header.php';
     </style>
 </head>
 <body>
-<?php require 'app/views/layouts/sidebar.php'; ?>
+<?php require VIEWS_PATH . '/layouts/sidebar.php'; ?>
 
     <div class="main-content">
         <div class="page-header">
@@ -153,4 +153,4 @@ require 'app/views/layouts/header.php';
         });
     }
     </script>
-<?php require 'app/views/layouts/footer.php'; ?>
+<?php require VIEWS_PATH . '/layouts/footer.php'; ?>

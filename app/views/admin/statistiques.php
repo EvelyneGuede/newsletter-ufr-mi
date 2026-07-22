@@ -3,7 +3,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'administratif') 
     header('Location: index.php?page=login');
     exit;
 }
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db   = getDB();
 $user = $_SESSION['user'];
 
@@ -62,7 +62,7 @@ $dernieres_nl = $db->query("
 <?php
 $titre_page = 'Statistiques';
 $page_active = 'statistiques';
-require 'app/views/layouts/header.php';
+require VIEWS_PATH . '/layouts/header.php';
 ?>
     <style>
         /* Cartes stats */
@@ -98,7 +98,7 @@ require 'app/views/layouts/header.php';
     </style>
 </head>
 <body>
-<?php require 'app/views/layouts/sidebar.php'; ?>
+<?php require VIEWS_PATH . '/layouts/sidebar.php'; ?>
 
     <!-- CONTENU -->
     <div class="main-content">
@@ -279,4 +279,4 @@ require 'app/views/layouts/header.php';
     });
     </script>
 
-<?php require 'app/views/layouts/footer.php'; ?>
+<?php require VIEWS_PATH . '/layouts/footer.php'; ?>

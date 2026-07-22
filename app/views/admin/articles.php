@@ -3,7 +3,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'administratif') 
     header('Location: index.php?page=login');
     exit;
 }
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db   = getDB();
 $user = $_SESSION['user'];
 
@@ -20,7 +20,7 @@ $articles = $db->query("
 <?php
 $titre_page = 'Articles';
 $page_active = 'articles';
-require 'app/views/layouts/header.php';
+require VIEWS_PATH . '/layouts/header.php';
 ?>
     <style>
         .article-card { background: #fff; border-radius: 14px; padding: 22px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 4px solid #dee2e6; }
@@ -44,7 +44,7 @@ require 'app/views/layouts/header.php';
     </style>
 </head>
 <body>
-<?php require 'app/views/layouts/sidebar.php'; ?>
+<?php require VIEWS_PATH . '/layouts/sidebar.php'; ?>
 
     <div class="main-content">
         <div class="page-header">
@@ -136,5 +136,5 @@ require 'app/views/layouts/header.php';
         form.style.display = form.style.display === 'block' ? 'none' : 'block';
     }
     </script>
-<?php require 'app/views/layouts/footer.php'; ?>
+<?php require VIEWS_PATH . '/layouts/footer.php'; ?>
 

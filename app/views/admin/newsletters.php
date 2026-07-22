@@ -3,7 +3,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'administratif') 
     header('Location: index.php?page=login');
     exit;
 }
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db   = getDB();
 $user = $_SESSION['user'];
 
@@ -20,7 +20,7 @@ $newsletters = $db->query("
 <?php
 $titre_page = 'Newsletters';
 $page_active = 'newsletters';
-require 'app/views/layouts/header.php';
+require VIEWS_PATH . '/layouts/header.php';
 ?>
     <style>
         .btn-creer { background: linear-gradient(135deg, #1515b5, #2929cc); color: white; border: none; border-radius: 10px; padding: 12px 24px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: opacity 0.2s; }
@@ -43,7 +43,7 @@ require 'app/views/layouts/header.php';
     </style>
 </head>
 <body>
-<?php require 'app/views/layouts/sidebar.php'; ?>
+<?php require VIEWS_PATH . '/layouts/sidebar.php'; ?>
 
     <div class="main-content">
         <div class="page-header">
@@ -95,5 +95,5 @@ require 'app/views/layouts/header.php';
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
-<?php require 'app/views/layouts/footer.php'; ?>
+<?php require VIEWS_PATH . '/layouts/footer.php'; ?>
 

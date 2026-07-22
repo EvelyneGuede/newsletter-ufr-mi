@@ -3,7 +3,7 @@ if (isset($_SESSION['user'])) {
     header('Location: index.php?page=dashboard');
     exit;
 }
-require_once __DIR__ . '/../../config/security.php';
+require_once __DIR__ . '/../../../config/security.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">

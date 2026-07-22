@@ -4,7 +4,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'enseignant') {
     exit;
 }
 $user = $_SESSION['user'];
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db = getDB();
 
 $stmt = $db->prepare("SELECT * FROM articles WHERE auteur_id = ? ORDER BY created_at DESC");
@@ -14,7 +14,7 @@ $mes_articles = $stmt->fetchAll();
 <?php
 $titre_page = 'Espace Enseignant';
 $page_active = 'enseignant_dashboard';
-require 'app/views/layouts/header.php';
+require VIEWS_PATH . '/layouts/header.php';
 ?>
     <style>
         .btn-soumettre { background: linear-gradient(135deg, #1515b5, #2929cc); color: white; border: none; border-radius: 10px; padding: 12px 24px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; margin-bottom: 28px; }
@@ -34,7 +34,7 @@ require 'app/views/layouts/header.php';
     </style>
 </head>
 <body>
-<?php require 'app/views/layouts/sidebar.php'; ?>
+<?php require VIEWS_PATH . '/layouts/sidebar.php'; ?>
 
     <div class="main-content">
         <div class="page-header">
@@ -102,4 +102,4 @@ require 'app/views/layouts/header.php';
             <?php endif; ?>
         </div>
     </div>
-<?php require 'app/views/layouts/footer.php'; ?>
+<?php require VIEWS_PATH . '/layouts/footer.php'; ?>

@@ -1,5 +1,5 @@
 <?php
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db    = getDB();
 $email = $_GET['email'] ?? '';
 

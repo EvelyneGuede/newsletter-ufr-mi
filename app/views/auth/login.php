@@ -3,7 +3,7 @@ if (isset($_SESSION['user'])) {
     header('Location: index.php?page=dashboard');
     exit;
 }
-require_once __DIR__ . '/../../config/security.php';
+require_once __DIR__ . '/../../../config/security.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -165,7 +165,8 @@ require_once __DIR__ . '/../../config/security.php';
             border-color: #c0d0e0;
             color: #222;
         }
-        .btn-google img { width: 20px; height: 20px; }
+        .btn-google img,
+        .btn-google .google-logo { width: 20px; height: 20px; flex: 0 0 20px; }
         .separator {
             display: flex;
             align-items: center;
@@ -290,8 +291,12 @@ require_once __DIR__ . '/../../config/security.php';
             <div class="separator">ou</div>
 
             <a href="app/controllers/GoogleAuthController.php" class="btn-google">
-                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 533.5 544.3'><path fill='%23ea4335' d='M533.5 278.4c0-17.6-1.4-34.6-4-51.1H272v96.7h146.9c-6.2 31.1-24.4 57.6-51.4 75.2v66h83.6c48.2-44.4 75.9-109.9 75.9-187.8z'/><path fill='%2334a853' d='M272 544c51.8 0 95.2-17.3 127-46.3l-83.6-66c-17.5 11.6-39.8 18-43.4 18-33.6 0-62-22.3-72-52h-86v68c20.8 41.5 61.5 69.3 110-1z'/><path fill='%234285f4' d='M200 414.5c-10-6.7-18.3-16.6-22-28.5h-86v68c12.6 25.3 31.1 47.4 55 62.1 24-62 37.1-121 37.1-181.6-.1 0 16-118 16-118z'/><path fill='%23fbbc04' d='M200 414.5c-10-6.7-18.3-16.6-22-28.5H92v68c12.6 25.3 31.1 47.4 55 62.1' /><path fill='%23ea4335' d='M272 354.1c8.8 0 17.3 1.5 25.4 4.3l74.5-73c-40.3-37.1-94.4-59.9-155.9-59.9-65.3 0-121.2 33.9-152.4 84.3l86 68c10-30.3 38.5-52.3 72-52.3' /></svg>"
-                     alt="Google logo">
+                <svg class="google-logo" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.64 0 6.55 5.38 2.56 13.22l7.98 6.19C12.45 13.16 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.63-.15-3.2-.43-4.72H24v9.02h12.94c-.56 2.99-2.25 5.52-4.8 7.22l7.73 6c4.51-4.16 7.11-10.29 7.11-17.52z"/>
+                    <path fill="#FBBC05" d="M10.54 28.59A14.5 14.5 0 0 1 9.78 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A24 24 0 0 0 0 24c0 3.88.93 7.55 2.56 10.78l7.98-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.92-2.14 15.87-5.93l-7.73-6c-2.14 1.44-4.87 2.3-8.14 2.3-6.26 0-11.55-3.66-13.46-9.91l-7.98 6.19C6.55 42.62 14.64 48 24 48z"/>
+                </svg>
                 Se connecter avec Google
             </a> 
             <div style="text-align:center; margin-top:20px; font-size:14px; color:#6c757d;">

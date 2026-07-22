@@ -4,7 +4,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'etudiant') {
     exit;
 }
 $user = $_SESSION['user'];
-require_once 'config/database.php';
+require_once ROOT_PATH . '/config/database.php';
 $db = getDB();
 
 // Articles soumis par cet étudiant
@@ -15,7 +15,7 @@ $mes_articles = $stmt->fetchAll();
 <?php
 $titre_page = 'Espace Étudiant';
 $page_active = 'etudiant_dashboard';
-require 'app/views/layouts/header.php';
+require VIEWS_PATH . '/layouts/header.php';
 ?>
     <style>
         .btn-soumettre {
@@ -42,7 +42,7 @@ require 'app/views/layouts/header.php';
     </style>
 </head>
 <body>
-<?php require 'app/views/layouts/sidebar.php'; ?>
+<?php require VIEWS_PATH . '/layouts/sidebar.php'; ?>
 
     <div class="main-content">
         <div class="page-header">
@@ -109,4 +109,4 @@ require 'app/views/layouts/header.php';
             <?php endif; ?>
         </div>
     </div>
-<?php require 'app/views/layouts/footer.php'; ?>
+<?php require VIEWS_PATH . '/layouts/footer.php'; ?>
