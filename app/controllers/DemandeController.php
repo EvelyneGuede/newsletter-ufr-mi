@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'administratif') {
-    header('Location: /newsletter_automatique/index.php?page=login');
+    header('Location: ' . APP_URL . '/index.php?page=login');
     exit;
 }
 
@@ -21,7 +21,7 @@ $stmt->execute([$user_id]);
 $destinataire = $stmt->fetch();
 
 if (!$destinataire) {
-    header('Location: /newsletter_automatique/index.php?page=demandes&erreur=utilisateur_introuvable');
+    header('Location: ' . APP_URL . '/index.php?page=demandes&erreur=utilisateur_introuvable');
     exit;
 }
 
@@ -46,13 +46,13 @@ switch ($action) {
             ''
         );
 
-        header('Location: /newsletter_automatique/index.php?page=demandes&succes=accepte');
+        header('Location: ' . APP_URL . '/index.php?page=demandes&succes=accepte');
         break;
 
     case 'refuser':
         $motif = trim($_POST['motif_refus'] ?? '');
         if (empty($motif)) {
-            header('Location: /newsletter_automatique/index.php?page=demandes&erreur=motif_requis');
+            header('Location: ' . APP_URL . '/index.php?page=demandes&erreur=motif_requis');
             exit;
         }
 
@@ -75,7 +75,7 @@ switch ($action) {
             $motif
         );
 
-        header('Location: /newsletter_automatique/index.php?page=demandes&succes=refuse');
+        header('Location: ' . APP_URL . '/index.php?page=demandes&succes=refuse');
         break;
 }
 exit;

@@ -6,21 +6,28 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'administratif') 
 require_once ROOT_PATH . '/config/database.php';
 $db   = getDB();
 $user = $_SESSION['user'];
+$demandes = [];
+$historique = [];
+$schema_demandes_incomplet = false;
 
-$demandes = $db->query(" 
-    SELECT * FROM utilisateurs
-    WHERE validation_statut = 'en_attente'
-    AND role != 'etudiant'
-    ORDER BY created_at DESC
-")->fetchAll();
+try {
+    $demandes = $db->query("
+        SELECT * FROM utilisateurs
+        WHERE validation_statut = 'en_attente'
+        AND role != 'etudiant'
+        ORDER BY created_at DESC
+    ")->fetchAll();
 
-$historique = $db->query(" 
-    SELECT * FROM utilisateurs
-    WHERE validation_statut IN ('accepte', 'refuse')
-    AND role != 'etudiant'
-    ORDER BY date_validation_compte DESC
-    LIMIT 20
-")->fetchAll();
+    $historique = $db->query("
+        SELECT * FROM utilisateurs
+        WHERE validation_statut IN ('accepte', 'refuse')
+        AND role != 'etudiant'
+        ORDER BY date_validation_compte DESC
+        LIMIT 20
+    ")->fetchAll();
+} catch (PDOException $e) {
+    $schema_demandes_incomplet = true;
+}
 
 $titre_page  = 'Demandes de compte';
 $page_active = 'demandes';
@@ -39,6 +46,13 @@ require VIEWS_PATH . '/layouts/header.php';
     <?php if (isset($_GET['succes'])): ?>
         <div class="alert-success">
             <?= $_GET['succes'] === 'accepte' ? 'Compte accepté ! L\'utilisateur peut maintenant se connecter.' : 'Demande refusée.' ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($schema_demandes_incomplet): ?>
+        <div class="alert-danger">
+            La gestion des demandes n'est pas encore activée sur cette base de données.
+            Ajoutez les colonnes nécessaires dans la table <code>utilisateurs</code>.
         </div>
     <?php endif; ?>
 
